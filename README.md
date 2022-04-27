@@ -48,7 +48,7 @@ For a specific number of minutes:
 let key = "key"
 let value = "value"
 
-TinyCache.cache(key, value: value, duration: .minutes(12) // 12 minutes
+TinyCache.cache(key, value: value, duration: .minutes(12)) // 12 minutes
 ```
 
 For a specific expiration date:
