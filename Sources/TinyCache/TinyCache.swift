@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /// A small in-memory cache for Codable objects.
 public class TinyCache {
     private static let shared = TinyCache()
