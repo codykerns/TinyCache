@@ -33,7 +33,7 @@ If the type doesn't match what's in the cache, the returned value will be `nil`.
 
 ### Expirations
 
-By default, TinyCache caches a value for 30 minutes. To customize the duration of each cached value until expiration, pass a duration:
+By default, TinyCache caches a value using `CacheDuration.medium` _(30 minutes)_. To customize the duration of each cached value until expiration, pass a duration:
 
 ```swift
 let key = "key"
