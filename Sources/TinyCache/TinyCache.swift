@@ -22,7 +22,7 @@ public class TinyCache {
     ///   - value: A ``Codable`` value to be saved in the cache.
     ///   - expiration: A ``CacheDuration`` indicating how long the value should be cached.
     ///   Defaults to ``.medium``, or 30 minutes.
-    static func cache(_ key: String, value: Codable?, duration: CacheDuration = .medium) {
+    public static func cache(_ key: String, value: Codable?, duration: CacheDuration = .medium) {
         let expiration = Date().add(minutes: duration.minutes)
         cache(key, value: value, expiration: expiration)
     }
@@ -32,7 +32,7 @@ public class TinyCache {
     ///   - key: The key used to access the cached value.
     ///   - value: A ``Codable`` value to be saved in the cache.
     ///   - expirationDate: A ``Date`` at which the value should be considered expired.
-    static func cache(_ key: String, value: Codable?, expiration: Date) {
+    public static func cache(_ key: String, value: Codable?, expiration: Date) {
         guard let value = value else {
             return
         }
@@ -51,14 +51,14 @@ public class TinyCache {
     ///   - key: The key used when setting the value in the cache.
     /// - Returns: An optional value from the cache. The value is `nil` if it
     /// doesn't exist in the cache.
-    static func value<T: Codable>(_ type: T.Type, key: String) -> T? {
+    public static func value<T: Codable>(_ type: T.Type, key: String) -> T? {
         removeExpiredValues()
         let obj = shared.cache.first(where: {$0.key == key})
         return obj?.value.value as? T
     }
 
     /// Remove all values from the cache immediately, ignoring expiration date.
-    static func clear() {
+    public static func clear() {
         shared.cache.removeAll()
     }
 
