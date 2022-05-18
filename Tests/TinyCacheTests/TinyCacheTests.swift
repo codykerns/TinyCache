@@ -53,4 +53,17 @@ final class TinyCacheTests: XCTestCase {
         TinyCache.cache(key, value: value, expiration: Date().add(minutes: -1))
         XCTAssertNil(TinyCache.value(String.self, key: key))
     }
+
+    func testNewProviderIsEmpty() {
+        TinyCache.clear()
+
+        let key = "key"
+        let value = "value"
+
+        TinyCache.cache(key, value: value)
+        XCTAssertNotNil(TinyCache.value(String.self, key: key))
+
+        TinyCache.configure(provider: CacheProvider.MemoryProvider())
+        XCTAssertNil(TinyCache.value(String.self, key: key))
+    }
 }

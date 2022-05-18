@@ -61,6 +61,24 @@ let expiration = Date()
 TinyCache.cache(key, value: value, expiration: expiration)
 ```
 
+### Custom CacheProvider
+
+For custom cache logic, create an object that conforms to `CacheProvidable` and implement:
+
+```swift
+func set(key: String, value: Codable, expiresAt: Date)
+func get<T: Codable>(_ type: T.Type, key: String) -> T?
+func clear()
+```
+
+To set your new provider, call `configure`:
+
+```swift
+TinyCache.configure(provider: MyCustomCacheProvider())
+```
+
+Calling `configure` immediately clears the current cache and sets your object as the default cache provider.
+
 ## License
 
 [MIT License](http://opensource.org/licenses/MIT).

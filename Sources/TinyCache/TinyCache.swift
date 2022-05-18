@@ -11,9 +11,17 @@ import Foundation
 public class TinyCache {
     private static let shared = TinyCache()
 
-    private var cache: [String:CacheValue] = [:]
+    private var cacheProvider: CacheProvidable = CacheProvider.MemoryProvider()
 
     private init() { }
+
+    /// Use this method to configure a custom CacheProvider.
+    /// - Parameter provider: An object that conforms to ``CacheProvidable``
+    /// Clears the current provider's cache, then switches to the new provider.
+    public static func configure(provider: CacheProvidable) {
+        shared.cacheProvider.clear()
+        shared.cacheProvider = provider
+    }
 
     /// Use this method to set a cached value for a certain duration.
     /// - Parameters:
@@ -36,12 +44,7 @@ public class TinyCache {
             return
         }
 
-        let val = CacheValue(value: value, expiresAt: expiration)
-        saveToCache(key: key, value: val)
-    }
-
-    private static func saveToCache(key: String, value: CacheValue) {
-        shared.cache[key] = value
+        shared.cacheProvider.set(key: key, value: value, expiresAt: expiration)
     }
 
     /// Use this method to retrieve a value from the cache.
@@ -51,29 +54,12 @@ public class TinyCache {
     /// - Returns: An optional value from the cache. The value is `nil` if it
     /// doesn't exist in the cache.
     public static func value<T: Codable>(_ type: T.Type, key: String) -> T? {
-        removeExpiredValues()
-        let obj = shared.cache.first(where: {$0.key == key})
-        return obj?.value.value as? T
+        shared.cacheProvider.get(T.self, key: key)
     }
 
     /// Remove all values from the cache immediately, ignoring expiration date.
     public static func clear() {
-        shared.cache.removeAll()
-    }
-
-    private static func removeExpiredValues() {
-        for val in shared.cache {
-            if Date() > val.value.expiresAt {
-                shared.cache.removeValue(forKey: val.key)
-            }
-        }
-    }
-}
-
-private extension TinyCache {
-    struct CacheValue {
-        var value: Codable
-        var expiresAt: Date
+        shared.cacheProvider.clear()
     }
 }
 
