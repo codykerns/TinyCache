@@ -61,7 +61,7 @@ let expiration = Date()
 TinyCache.cache(key, value: value, expiration: expiration)
 ```
 
-## Custom CacheProvider
+### Custom CacheProvider
 
 For custom cache logic, create an object that conforms to `CacheProvidable` and implement:
 
