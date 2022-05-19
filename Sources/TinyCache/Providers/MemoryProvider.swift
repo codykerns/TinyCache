@@ -11,6 +11,8 @@ public extension CacheProvider {
     class MemoryProvider: CacheProvidable {
         fileprivate var cache: [String: MemoryCacheValue] = [:]
 
+        public init() { }
+
         public func set(key: String, value: Codable, expiresAt: Date) {
             let val = MemoryCacheValue(value: value, expiresAt: expiresAt)
             cache[key] = val
